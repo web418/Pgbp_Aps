@@ -1,0 +1,92 @@
+SISTEM MONITORING IURAN WAJIB BULANAN
+PERSEKUTUAN GEREJA-GEREJA BAPTIS PAPUA (PGBP)
+
+========================================================================
+STRUKTUR DIREKTORI & FILE PROJECT (ENTERPRISE ARCHITECTURE)
+========================================================================
+
+PGBP-IURAN/
+│
+├── index.php                 # Halaman Utama / Router Utama Aplikasi
+├── login.php                 # Halaman Autentikasi Login Pengguna
+├── register.php              # Halaman Registrasi Admin Wilayah / Bendahara
+├── forgot-password.php       # Halaman Permohonan Reset Password
+├── reset-password.php        # Halaman Eksekusi Reset Password
+├── logout.php                # Script Proses Destruksi Session & Logout
+│
+├── config/                   # Folder Konfigurasi Sistem & Keamanan
+│   ├── database.php          # Konfigurasi Koneksi Database MySQL (PDO & Prepared Statements)
+│   ├── config.php            # Konfigurasi Global Aplikasi, Base URL, Keamanan (CSRF/XSS)
+│   ├── auth.php              # Middleware Otentikasi & Autorisasi Role (Role-based Access Control)
+│   └── session.php           # Manajemen Session Aman (Secure Session, Session Hijacking Prevention)
+│
+├── database/                 # Folder Penyimpanan Database SQL & Migrasi
+│   └── pgbp_iuran.sql        # Skema Database MySQL LENGKAP, Data Master 19 Wilayah & Gereja
+│
+├── assets/                   # Folder Aset Frontend Statis
+│   ├── css/                  # Custom CSS (SaaS UI, Glassmorphism, Variables)
+│   │   └── style.css         # File CSS Utama Kustomisasi UI
+│   ├── js/                   # Custom JavaScript (AJAX Fetch API, Dynamic UI)
+│   │   ├── app.js            # Global Handler JS & Dark Mode
+│   │   ├── charts.js         # Pengolahan Visual Grafik Chart.js
+│   │   └── validation.js     # Validasi Sisi Klien (Client-Side Validation Engine)
+│   ├── img/                  # Folder Gambar & Media Statis
+│   │   ├── logo-pgbp.png     # Logo Resmi Persekutuan Gereja-Gereja Baptis Papua
+│   │   └── default-user.png  # Foto Profil Standar Pengguna
+│   ├── icons/                # Folder Icon Web (Favicon, Launcher)
+│   └── uploads/              # Folder Penyimpanan Bukti Transfer Iuran Wilayah (Tipe JPG/PNG/PDF)
+│
+├── layouts/                  # Folder Komponen Tata Letak (Reusable UI Components)
+│   ├── header.php            # Bagian <head>, Bootstrap 5, Tailwind CSS, Font Awesome, CSS Tambahan
+│   ├── navbar.php            # Menu Bar Atas, Notifikasi, Informasi Profil Pengguna
+│   ├── sidebar.php           # Menu Navigasi Samping Dinamis (Beda Menu per Role User)
+│   ├── footer.php            # Bagian Kaki Halaman, Hak Cipta, Sistem Info
+│   └── script.php            # Pemuatan JS Global (Bootstrap, SweetAlert2, Chart.js, DataTables)
+│
+├── modules/                  # Folder Modul Fitur Bisnis (MVC Logic Views)
+│   ├── dashboard/            # Modul Halaman Dashboard Utama
+│   │   ├── pusat.php         # Tampilan Dashboard Nasional Bendahara Pusat
+│   │   └── wilayah.php       # Tampilan Dashboard Regional Admin Wilayah
+│   ├── wilayah/              # Modul Manajemen Wilayah PGBP (Master Data & Statistik)
+│   │   ├── index.php         # Daftar Semua Wilayah (Pusat & Wilayah)
+│   │   ├── tambah.php        # Form Tambah Wilayah Baru (Hanya Bendahara Pusat)
+│   │   └── detail.php        # Detail Statistik Wilayah Tertentu
+│   ├── gereja/               # Modul Manajemen Gereja (Master Data & Gembala)
+│   │   ├── index.php         # Daftar Gereja (Filter Wilayah untuk Pusat, Otomatis untuk Wilayah)
+│   │   ├── tambah.php        # Form Input Gereja Baru oleh Admin Wilayah
+│   │   └── edit.php          # Edit Informasi Gereja
+│   ├── iuran/                # Modul Manajemen Input & Upload Iuran Bulanan
+│   │   ├── index.php         # Riwayat Iuran (Wilayah) / Rekapitulasi Pembayaran (Pusat)
+│   │   ├── input.php         # Form Input Pembayaran Iuran & Upload Bukti Transfer (Wilayah Only)
+│   │   └── detail.php        # Detail Bukti Pembayaran, Status, & Catatan Verifikasi
+│   ├── verifikasi/           # Modul Verifikasi Iuran (Khusus Bendahara Pusat)
+│   │   ├── index.php         # Antrean Verifikasi (Pending) & Riwayat Keputusan
+│   │   └── proses.php        # Form Keputusan Verifikasi (Setuju / Tolak / Revisi)
+│   ├── laporan/              # Modul Pelaporan & Eksportasi Data (PDF, Excel, Print)
+│   │   ├── nasional.php      # Cetak Laporan Gabungan Bulanan & Tahunan Nasional (Pusat)
+│   │   ├── wilayah.php       # Cetak Laporan Per Wilayah Bulanan & Tahunan (Wilayah)
+│   │   ├── export-pdf.php    # Engine Pembuat Dokumen PDF (menggunakan FPDF/TCPDF/Dompdf)
+│   │   └── export-excel.php  # Engine Pembuat Dokumen Excel (menggunakan PhpSpreadsheet / HTML Table)
+│   ├── users/                # Modul Manajemen Pengguna & Approval Registrasi
+│   │   ├── index.php         # Daftar User, Status, & Role (Pusat)
+│   │   └── approval.php      # Antrean Approval Akun Baru (Pusat)
+│   ├── audit/                # Modul Audit Trail Keamanan
+│   │   └── index.php         # Log Aktivitas Pengguna (IP, Browser, Aksi, Waktu)
+│   ├── setting/              # Modul Konfigurasi Aplikasi & Database Backup
+│   │   └── index.php         # Backup DB, Reset Data, Pengaturan Sistem
+│   └── profile/              # Modul Edit Profil & Password Pengguna
+│       └── index.php         # Form Perubahan Nama, Email, Foto Profil, & Password
+│
+└── api/                      # REST API Endpoints (AJAX Fetch Proxy)
+    ├── dashboard.php         # API Mengambil Data Statistik Real-time Chart
+    ├── login.php             # API Validasi Kredensial Login & Captcha
+    ├── wilayah.php           # API CRUD Wilayah
+    ├── gereja.php            # API CRUD Gereja
+    ├── iuran.php             # API Transaksi Pembayaran & Upload
+    ├── verifikasi.php        # API Proses Verifikasi & Pencatatan Log
+    └── laporan.php           # API Filter Data Laporan untuk Visualizer
+
+========================================================================
+STRUKTUR DI ATAS DIRANCANG DENGAN PRINSIP SEPARATION OF CONCERNS (SoC)
+UNTUK MEMASTIKAN KODE AKAN SANGAT MUDAH DIMODULARISASI DAN DIMELIHARA.
+========================================================================

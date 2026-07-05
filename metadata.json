@@ -1,0 +1,6 @@
+{
+  "name": "Sistem Monitoring Iuran PGBP",
+  "description": "Sistem Monitoring Iuran Wajib Bulanan Persekutuan Gereja-Gereja Baptis Papua (PGBP)",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
